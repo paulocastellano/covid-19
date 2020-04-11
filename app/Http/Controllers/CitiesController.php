@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 
 use App\Models\City;
 
+use App\Repositories\CityRepository;
+
 
 class CitiesController extends Controller
 {
+    protected $cityRepository;
+
     /**
      * Create a new controller instance.
      *
@@ -16,7 +20,7 @@ class CitiesController extends Controller
      */
     public function __construct()
     {
-
+        $this->cityRepository = new cityRepository;
     }
 
     /**
@@ -24,9 +28,20 @@ class CitiesController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function show($state, $city)
     {
-        $cities = City::where('is_last', true)->orderBy('confirmed', 'desc')->get();
-        return response()->json($cities);
+        // total of cases of city
+        $totalOfCasesOfCity = City::where('is_last', true)
+            ->where('place_type', 'city')
+            ->where('city', $city)
+            ->where('state', $state)
+            ->first();
+
+        // evolution of covid in the state...
+        $evolution = $this->cityRepository->getEvolutionByCity($city);
+
+        return view('cities.show')
+            ->with('evolution', $evolution)
+            ->with('totalOfCasesOfCity', $totalOfCasesOfCity);
     }
 }

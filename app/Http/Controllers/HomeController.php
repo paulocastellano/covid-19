@@ -4,8 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Repositories\CountryRepository;
+use App\Repositories\StateRepository;
+
+use Cache;
+
+use App\Models\City;
+
 class HomeController extends Controller
 {
+    protected $stateRepository;
+
+    protected $countryRepository;
+
     /**
      * Create a new controller instance.
      *
@@ -13,7 +24,8 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->stateRepository = new stateRepository;
+        $this->countryRepository = new countryRepository;
     }
 
     /**
@@ -23,6 +35,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        // covid by states...
+        $states = $this->stateRepository->get();
+
+        // evolution of covid in the country...
+        $evolution = $this->countryRepository->getEvolutionByPeriod();
+
+        return view('home.index')
+            ->with('evolution', $evolution)
+            ->with('states', $states);
     }
 }

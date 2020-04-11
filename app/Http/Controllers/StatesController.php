@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Repositories\StateRepository;
+use App\Repositories\CityRepository;
+
 use Cache;
 
 use App\Models\City;
@@ -11,6 +14,10 @@ use App\Models\City;
 
 class StatesController extends Controller
 {
+    protected $stateRepository;
+
+    protected $cityRepository;
+
     /**
      * Create a new controller instance.
      *
@@ -18,31 +25,27 @@ class StatesController extends Controller
      */
     public function __construct()
     {
-
+        $this->stateRepository = new stateRepository;
+        $this->cityRepository = new cityRepository;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+    public function show($state)
     {
-        // pega do cash
-        $states = Cache::get('states');
-
-        // se nao encontrar
-        if(!$states) {
-
-            // pega na base
-            $states = City::where('is_last', true)
+        // total of cases of state
+        $totalOfCasesOfState = City::where('is_last', true)
             ->where('place_type', 'state')
-            ->orderBy('confirmed', 'desc')->get();
+            ->where('state', $state)
+            ->first();
 
-            // joga no cache
-            Cache::put('states', $states, now()->addHours(12));
-        }
+        // evolution of covid in the state...
+        $evolution = $this->stateRepository->getEvolutionByState($state);
 
-        return response()->json($states);
+        // get cities from state
+        $cities = $this->cityRepository->getCitiesByState($state);
+
+        return view('states.show')
+            ->with('cities', $cities)
+            ->with('evolution', $evolution)
+            ->with('totalOfCasesOfState', $totalOfCasesOfState);
     }
 }

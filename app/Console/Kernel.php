@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // update data at 12:00 pm
-        $schedule->command('update:data')->dailyAt('03:00');
+        // update data hourly
+        $schedule->command('update:data')->hourly();
     }
 
     /**

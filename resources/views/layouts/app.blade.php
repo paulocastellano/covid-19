@@ -18,16 +18,17 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- GTM -->
+    @include('layouts.common.include_head')
 </head>
 <body>
+    @include('layouts.common.include_body')
     <div id="app">
-
         @include('layouts.header')
-
         <main class="py-4">
             @yield('content')
         </main>
-
         @include('layouts.footer')
     </div>
 </body>

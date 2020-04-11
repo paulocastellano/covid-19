@@ -12,14 +12,14 @@
     <div class="row text-center">
         <div class="col-6">
             <div class="alert alert-primary" role="alert">
-                <p class="mb-1">Total de casos confirmados</p>
+                <p class="mb-1">Confirmados</p>
                 <h4 class="alert-heading">{{ $totalOfCasesInBrazil }}</h4>
             </div>
         </div>
 
         <div class="col-6">
             <div class="alert alert-danger" role="alert">
-                <p class="mb-1">Total óbitos</p>
+                <p class="mb-1">Óbitos</p>
                 <h4 class="alert-heading">{{ $totalOfDeathInBrazil }}</h4>
             </div>
         </div>

@@ -10,12 +10,28 @@
         </ol>
     </nav>
 
+    <div class="row text-center">
+        <div class="col-6">
+            <div class="alert alert-primary" role="alert">
+                <p class="mb-1">Total de casos confirmados</p>
+                <h4 class="alert-heading">{{ $totalOfCasesOfCity->confirmed }}</h4>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="alert alert-danger" role="alert">
+                <p class="mb-1">Total óbitos</p>
+                <h4 class="alert-heading">{{ $totalOfCasesOfCity->deaths }}</h4>
+            </div>
+        </div>
+    </div>
+
     <div class="row mb-5">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <h1 class="card-title text-center">
-                        Total de casos de covid-19 na cidade de {{ $totalOfCasesOfCity->city }}: <strong>{{ $totalOfCasesOfCity->confirmed }}</strong>
+                        Evolução de casos de covid-19 na cidade de {{ $totalOfCasesOfCity->city }}
                     </h1>
                     <graphs-evolution :evolution="{{$evolution}}" />
                 </div>

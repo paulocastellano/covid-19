@@ -9,6 +9,22 @@
         </ol>
     </nav>
 
+    <div class="row text-center">
+        <div class="col-6">
+            <div class="alert alert-primary" role="alert">
+                <p class="mb-1">Total de casos confirmados</p>
+                <h4 class="alert-heading">{{ $totalOfCasesInBrazil }}</h4>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="alert alert-danger" role="alert">
+                <p class="mb-1">Total óbitos</p>
+                <h4 class="alert-heading">{{ $totalOfDeathInBrazil }}</h4>
+            </div>
+        </div>
+    </div>
+
     <div class="row mb-5">
         <div class="col-sm-12">
             <div class="card">
@@ -26,30 +42,32 @@
                 <div class="card-body">
                     <h2 class="card-title text-center">Casos de covid-19 por estados</h2>
 
-                    <table class="table table-striped table-sm text-center">
-                        <thead>
-                            <tr>
-                            <th scope="col">Estado</th>
-                            <th scope="col">Confirmados</th>
-                            <th scope="col">Mortes</th>
-                            <th scope="col">Taxa de mortalidade</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($states as $state)
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm text-center">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <a href="{{ route('states.show' , strtolower($state->state)) }}">
-                                            {{ $state->state }}
-                                        </a>
-                                    </td>
-                                    <td> {{ $state->confirmed }}</td>
-                                    <td> {{ $state->deaths }}</td>
-                                    <td> {{ $state->death_rate ? $state->death_rate : 0 }}</td>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Confirmados</th>
+                                <th scope="col">Mortes</th>
+                                <th scope="col">Taxa de mortalidade</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach($states as $state)
+                                    <tr>
+                                        <td>
+                                            <a href="{{ route('states.show' , strtolower($state->state)) }}">
+                                                {{ $state->state }}
+                                            </a>
+                                        </td>
+                                        <td> {{ $state->confirmed }}</td>
+                                        <td> {{ $state->deaths }}</td>
+                                        <td> {{ $state->death_rate ? $state->death_rate : 0 }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

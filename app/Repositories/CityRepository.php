@@ -11,10 +11,10 @@ class CityRepository {
     public function getCitiesByState($state) {
 
         // pega do cash
-        // $cities = Cache::get('cities');
+        $cities = Cache::get("cities-by-state-$state");
 
         // se nao encontrar
-        // if(!$states) {
+        if(!$cities) {
 
             // pega na base
             $cities = City::where('is_last', true)
@@ -23,15 +23,22 @@ class CityRepository {
             ->orderBy('confirmed', 'desc')->get();
 
             // joga no cache
-            // Cache::put('states', $states, now()->addHours(12));
-        // }
+            Cache::tags(['city'])->put("cities-by-state-$state", $cities, now()->addHours(12));
+        }
 
         return $cities;
     }
 
     public function getEvolutionByCity($city) {
-        $evolution =
-            City::select(
+
+        // pega do cash
+        $evolution = Cache::get("evolution-city-$city");
+
+        // se nao encontrar
+        if(!$evolution) {
+
+            // pega no banco
+            $evolution = City::select(
                 'date',
                 DB::raw("SUM(confirmed) as totalConfirmed"),
                 DB::raw("SUM(deaths) as totalDeaths"),
@@ -51,7 +58,10 @@ class CityRepository {
                 ];
             });
 
-        return $evolution;
+            // joga no cache
+            Cache::tags(['city'])->put("evolution-city-$city", $evolution, now()->addHours(12));
+        }
 
+        return $evolution;
     }
 }

@@ -35,6 +35,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // total of cases in brazil
+        $totalOfCasesInBrazil = $this->countryRepository->getTotalOfCasesInBrazil();
+
+        // total of death in brazil
+        $totalOfDeathInBrazil = $this->countryRepository->getTotalDeathInBrazil();
 
         // covid by states...
         $states = $this->stateRepository->get();
@@ -43,6 +48,8 @@ class HomeController extends Controller
         $evolution = $this->countryRepository->getEvolutionByPeriod();
 
         return view('home.index')
+            ->with('totalOfCasesInBrazil', $totalOfCasesInBrazil)
+            ->with('totalOfDeathInBrazil', $totalOfDeathInBrazil)
             ->with('evolution', $evolution)
             ->with('states', $states);
     }

@@ -30,15 +30,28 @@ class CitiesController extends Controller
      */
     public function show($state, $city)
     {
+
+        // check state
+        $state = City::where('place_type', 'state')->where('state', $state)->first();
+        if(!$state) {
+            abort(404);
+        }
+
+        // check city
+        $city = City::where('place_type', 'city')->where('city', $city)->first();
+        if(!$city) {
+            abort(404);
+        }
+
         // total of cases of city
         $totalOfCasesOfCity = City::where('is_last', true)
             ->where('place_type', 'city')
-            ->where('city', $city)
-            ->where('state', $state)
+            ->where('city', $city->city)
+            ->where('state', $state->state)
             ->first();
 
         // evolution of covid in the state...
-        $evolution = $this->cityRepository->getEvolutionByCity($city);
+        $evolution = $this->cityRepository->getEvolutionByCity($city->city);
 
         return view('cities.show')
             ->with('evolution', $evolution)

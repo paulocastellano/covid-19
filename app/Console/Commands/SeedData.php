@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use DB;
+use DB, Log;
 
 use Illuminate\Support\Facades\Http;
 
@@ -43,51 +43,61 @@ class SeedData extends Command
      */
     public function handle()
     {
-        // começa com true
-        $next_page = "https://brasil.io/api/dataset/covid19/caso/data?format=json";
 
-        // se ainda tiver mais paginas
-        while ($next_page) {
+        try {
+            // começa com true
+            $nextPage = "https://brasil.io/api/dataset/covid19/caso/data?format=json";
 
-            // faz o get
-            $response = Http::get($next_page);
+            // se ainda tiver mais paginas
+            while ($nextPage) {
+
+                // faz o get
+                $response = Http::get($nextPage);
 
 
-            // se tiver proxima pagina ja atribui
-            if($response->json()['next']) {
-                $next_page = $response->json()['next'];
+                // se tiver proxima pagina ja atribui
+                if($response->json()['next']) {
+                    $nextPage = $response->json()['next'];
+                }
+
+                // se nao tiver seta null e acaba
+                else {
+                    $nextPage = null;
+                }
+
+                // varre as respostas
+                foreach($response->json()['results'] as $result) {
+
+                    // cria o novo registro
+                    $city = new City;
+                    $city->city = $result['city'];
+                    $city->city_ibge_code = $result['city_ibge_code'];
+                    $city->confirmed = $result['confirmed'];
+                    $city->confirmed_per_100k_inhabitants = $result['confirmed_per_100k_inhabitants'];
+
+                    $city->date = $result['date'];
+                    $city->death_rate = $result['death_rate'];
+                    $city->deaths = $result['deaths'];
+
+                    $city->estimated_population_2019 = $result['estimated_population_2019'];
+                    $city->is_last = $result['is_last'];
+                    $city->order_for_place = $result['order_for_place'];
+                    $city->place_type = $result['place_type'];
+                    $city->state = $result['state'];
+
+                    $city->save();
+
+                }
             }
 
-            // se nao tiver seta null e acaba
-            else {
-                $next_page = null;
-            }
+            // console alert
+            $this->info("Seed data done.");
 
-            // varre as respostas
-            foreach($response->json()['results'] as $result) {
+            // flush all cache
+            Cache::flush();
 
-                // cria o novo registro
-                $city = new City;
-                $city->city = $result['city'];
-                $city->city_ibge_code = $result['city_ibge_code'];
-                $city->confirmed = $result['confirmed'];
-                $city->confirmed_per_100k_inhabitants = $result['confirmed_per_100k_inhabitants'];
-
-                $city->date = $result['date'];
-                $city->death_rate = $result['death_rate'];
-                $city->deaths = $result['deaths'];
-
-                $city->estimated_population_2019 = $result['estimated_population_2019'];
-                $city->is_last = $result['is_last'];
-                $city->order_for_place = $result['order_for_place'];
-                $city->place_type = $result['place_type'];
-                $city->state = $result['state'];
-
-                $city->save();
-
-            }
+        } catch (\Exception $e) {
+            Log::error($e);
         }
-
-        $this->info("Seed data done.");
     }
 }

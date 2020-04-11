@@ -10,27 +10,35 @@ class StateRepository {
 
     public function get() {
 
-        // pega do cash
+        //Retrieve from cache
         $states = Cache::get('states');
 
-        // se nao encontrar
+        // if not found on cache
         if(!$states) {
 
-            // pega na base
+            // get in database
             $states = City::where('is_last', true)
             ->where('place_type', 'state')
-            ->orderBy('confirmed', 'desc')->get();
+            ->orderBy('confirmed', 'desc')
+            ->get();
 
-            // joga no cache
-            Cache::put('states', $states, now()->addHours(12));
+            // Create new cache
+            Cache::tags(['state'])->put('states', $states, now()->addHours(12));
         }
 
         return $states;
     }
 
     public function getEvolutionByState($state) {
-        $evolution =
-            City::select(
+
+        // Retrieve from cache
+        $evolution = Cache::get("evolution-by-state-$state");
+
+        // if not found on cache
+        if(!$evolution) {
+
+            // get in database
+            $evolution = City::select(
                 'date',
                 DB::raw("SUM(confirmed) as totalConfirmed"),
                 DB::raw("SUM(deaths) as totalDeaths"),
@@ -49,6 +57,10 @@ class StateRepository {
                     'date' => \Carbon\Carbon::createFromFormat('Y-m-d', $data->date)->format('d/m')
                 ];
             });
+
+            // Create new cache
+            Cache::tags(['state'])->put("evolution-by-state-$state", $evolution, now()->addHours(12));
+        }
 
         return $evolution;
 

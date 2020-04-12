@@ -40,12 +40,12 @@ export default {
                     datasets: [
                         {
                             label: 'Confirmados',
-                            backgroundColor: '#005aff',
+                            backgroundColor: '#5eba00',
                             data: this.totalConfirmed
                         },
                         {
-                            label: 'Mortos',
-                            backgroundColor: '#f93c3c',
+                            label: 'Óbitos',
+                            backgroundColor: '#cd201f',
                             data: this.totalDeaths
                         }
                     ]

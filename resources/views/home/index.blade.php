@@ -1,63 +1,78 @@
 @extends('layouts.app')
-
 @section('content')
-<div class="container">
 
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Home</li>
-        </ol>
-    </nav>
-
-    <div class="row text-center">
-        <div class="col-6">
-            <div class="alert alert-primary" role="alert">
-                <p class="mb-1">Confirmados</p>
-                <h4 class="alert-heading">{{ $totalOfCasesInBrazil }}</h4>
-            </div>
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                Visão geral do covid-19 no Brasil
+            </h1>
         </div>
 
-        <div class="col-6">
-            <div class="alert alert-danger" role="alert">
-                <p class="mb-1">Óbitos</p>
-                <h4 class="alert-heading">{{ $totalOfDeathInBrazil }}</h4>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="h5">Confirmados</div>
+                        <div class="display-4 font-weight-bold mb-4">{{ number_format($totalOfCasesInBrazil) }}</div>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-success" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row mb-5">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title text-center">Evolução de casos de covid-19 no Brasil</h2>
-                    <graphs-evolution :evolution="{{$evolution}}" />
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="h5">Óbitos</div>
+                        <div class="display-4 font-weight-bold mb-4">{{ number_format($totalOfDeathInBrazil) }}</div>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-red" style="width: 100%"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title text-center">Casos de covid-19 por estados</h2>
+        <div class="row row-cards row-deck">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-status bg-blue"></div>
+                    <div class="card-header">
+                        <h2 class="card-title">Evolução de casos de covid-19 no Brasil</h2>
+                    </div>
+                    <div class="card-body">
+                        <graphs-evolution :evolution="{{$evolution}}" />
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="row row-cards row-deck">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Casos de covid-19 por estados</h2>
+                    </div>
                     <div class="table-responsive">
-                        <table class="table table-striped table-sm text-center">
+                    <div class="card-status bg-blue"></div>
+                        <table class="table card-table table-vcenter text-nowrap table-sm text-center">
                             <thead>
                                 <tr>
-                                <th scope="col">Estado</th>
-                                <th scope="col">Confirmados</th>
-                                <th scope="col">Mortes</th>
-                                <th scope="col">Taxa de mortalidade</th>
-                                <th scope="col"></th>
+                                    <th class="w-1">Estado</th>
+                                    <th>Confirmados</th>
+                                    <th>Mortes</th>
+                                    <th>Tax. mortalidade</th>
+                                    <th>Última atualização</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($states as $state)
                                     <tr>
                                         <td>
-                                            <a href="{{ route('states.show' , strtolower($state->state)) }}">
+                                            <a href="{{ route('states.show' , strtolower($state->state)) }}" >
                                                 {{ $state->state }}
                                             </a>
                                         </td>
@@ -65,9 +80,10 @@
                                         <td> {{ $state->deaths }}</td>
                                         <td> {{ $state->death_rate ? ($state->death_rate * 100) : 0 }}%</td>
                                         <td>
-                                            <a class="btn btn-sm btn-success"  href="{{ route('states.show' , strtolower($state->state)) }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                            </a>
+                                            {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $state->updated_at)->locale('pt-br')->diffForHumans() }}
+                                        </td>
+                                        <td class="text-right">
+                                            <a href="{{ route('states.show' , strtolower($state->state)) }}" class="btn btn-primary btn-sm">Ver cidades</a>
                                         </td>
                                     </tr>
                                 @endforeach

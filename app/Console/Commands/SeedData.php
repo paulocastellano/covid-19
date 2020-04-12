@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use DB, Log;
+use DB, Log, Cache;
 
 use Illuminate\Support\Facades\Http;
 

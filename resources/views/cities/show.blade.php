@@ -1,6 +1,61 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                Visão geral do covid-19 na cidade de {{ $totalOfCasesOfCity->city }}
+            </h1>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="h5">Confirmados</div>
+                        <div class="display-4 font-weight-bold mb-4">{{ number_format($totalOfCasesOfCity->confirmed) }}</div>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-success" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="h5">Óbitos</div>
+                        <div class="display-4 font-weight-bold mb-4">{{ number_format($totalOfCasesOfCity->deaths) }}</div>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-red" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cards row-deck">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-status bg-blue"></div>
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            Evolução de casos de covid-19 na cidade de {{ $totalOfCasesOfCity->city }}
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <graphs-evolution :evolution="{{$evolution}}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+
+{{-- <div class="container">
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -10,33 +65,4 @@
         </ol>
     </nav>
 
-    <div class="row text-center">
-        <div class="col-6">
-            <div class="alert alert-primary" role="alert">
-                <p class="mb-1">Confirmados</p>
-                <h4 class="alert-heading">{{ $totalOfCasesOfCity->confirmed }}</h4>
-            </div>
-        </div>
-
-        <div class="col-6">
-            <div class="alert alert-danger" role="alert">
-                <p class="mb-1">Óbitos</p>
-                <h4 class="alert-heading">{{ $totalOfCasesOfCity->deaths }}</h4>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mb-5">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <h1 class="card-title text-center">
-                        Evolução de casos de covid-19 na cidade de {{ $totalOfCasesOfCity->city }}
-                    </h1>
-                    <graphs-evolution :evolution="{{$evolution}}" />
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+ --}}

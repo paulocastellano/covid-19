@@ -27,6 +27,8 @@ class CreateCitiesTable extends Migration
             $table->bigInteger('order_for_place')->nullable();
             $table->string('place_type', 255)->nullable();
             $table->date('date')->nullable();
+            $table->timestamps();
+            $table->softDeletes('deleted_at', 0);
         });
     }
 

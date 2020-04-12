@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\CountryRepository;
 use App\Repositories\StateRepository;
 
-use Cache;
+use Cache, SEO;
 
 use App\Models\City;
 
@@ -35,6 +35,13 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        /**
+         * Seo
+         */
+        SEO::setTitle('Estatísticas, notícias e evolução do coronavirus pelo Brasil');
+        SEO::setDescription('Estatísticas, notícias, gráficos e evolução do coronavirus por cidade, estado e Brasil. Veja como está o covid-19 na sua cidade.');
+
         // total of cases in brazil
         $totalOfCasesInBrazil = $this->countryRepository->getTotalOfCasesInBrazil();
 

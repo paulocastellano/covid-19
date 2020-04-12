@@ -15,7 +15,7 @@
                     </ul> --}}
                 </div>
                 <div class="col-auto">
-                    <a href="https://github.com/paulocastellano/covid-19" class="btn btn-github btn-sm  d-none d-md-flex" target="_blank">
+                    <a href="https://github.com/paulocastellano/covid-19" class="btn btn-github btn-sm  d-none d-md-flegit" target="_blank">
                         <i class="fa fa-github mr-2"></i>Github
                     </a>
                 </div>

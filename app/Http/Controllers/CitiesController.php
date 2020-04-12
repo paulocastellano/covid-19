@@ -8,6 +8,7 @@ use App\Models\City;
 
 use App\Repositories\CityRepository;
 
+use SEO;
 
 class CitiesController extends Controller
 {
@@ -42,6 +43,12 @@ class CitiesController extends Controller
         if(!$city) {
             abort(404);
         }
+
+        /**
+         * Seo
+         */
+        SEO::setTitle("Notícias e evolução do coronavirus na cidade de $city->city - $state->state");
+        SEO::setDescription("Estatísticas, notícias, gráficos e evolução coronavirus na cidade de $city->city - $state->state. Veja mais sobre o COVID-19.");
 
         // total of cases of city
         $totalOfCasesOfCity = City::where('is_last', true)

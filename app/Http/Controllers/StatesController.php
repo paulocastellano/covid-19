@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\StateRepository;
 use App\Repositories\CityRepository;
 
-use Cache;
+use Cache, SEO;
 
 use App\Models\City;
 
@@ -35,6 +35,12 @@ class StatesController extends Controller
         if(!$state) {
             abort(404);
         }
+
+        /**
+         * Seo
+         */
+        SEO::setTitle("Notícias e evolução do coronavirus no estado de $state->state | COVID-19");
+        SEO::setDescription("Estatísticas, notícias, gráficos e evolução coronavirus no estado de $state->state. Veja mais sobre o COVID-19.");
 
         // total of cases of state
         $totalOfCasesOfState = City::where('is_last', true)

@@ -10,6 +10,7 @@ Todos os dados que utilizo neste projeto são publicos e estão disponíveis em 
 Para contribuir você deve fazer um pull request através deste repositório.
 
 ## Este projeto utiliza
+- [Tabler Admin Template](https://github.com/tabler/tabler)
 - [Laravel](https://laravel.com)
 - [VueJS](https://vuejs.org)
 - [DigitalOcean](https://digitalocean.com/)

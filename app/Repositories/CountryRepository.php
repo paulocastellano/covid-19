@@ -8,6 +8,9 @@ use Cache, DB, Carbon;
 
 class CountryRepository {
 
+    /**
+     * Total de óbitos no brasil
+     */
     public function getTotalDeathInBrazil() {
         // retrieve from cache
         $totalOfDeathInBrazil = Cache::get('total-of-death-in-brazil');
@@ -27,6 +30,9 @@ class CountryRepository {
         return $totalOfDeathInBrazil;
     }
 
+    /**
+     * Total de casos confirmados
+     */
     public function getTotalOfCasesInBrazil() {
 
         // retrieve from cache
@@ -47,6 +53,9 @@ class CountryRepository {
         return $totalOfCasesInBrazil;
     }
 
+    /**
+     * Evolução no brasil
+     */
     public function getEvolutionByPeriod() {
 
         // retrieve from cache
@@ -63,6 +72,7 @@ class CountryRepository {
                 DB::raw("SUM(death_rate) as totalDeathRate")
             )
             ->where('place_type', 'state')
+            ->where('date', '<', date('Y-m-d')) //somente até a data de ontem, isso é por causa dos dados que o brasil.io fornece
             ->groupBy('date')
             ->orderBy('date', 'asc')
             ->get()

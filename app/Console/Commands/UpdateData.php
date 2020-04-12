@@ -85,50 +85,37 @@ class UpdateData extends Command
                             $last = City::where('is_last', 1)->where('city_ibge_code', $result['city_ibge_code'])->first();
                         }
 
-                        // se não encontrar, caso de cidades que ainda não tinham dados
-                        if(!$last) {
-                            $last = new City;
-                            $last->city = $result['city'];
-                            $last->city_ibge_code = $result['city_ibge_code'];
-                            $last->confirmed = $result['confirmed'];
-                            $last->confirmed_per_100k_inhabitants = $result['confirmed_per_100k_inhabitants'];
-                            $last->date = $result['date'];
-                            $last->death_rate = $result['death_rate'];
-                            $last->deaths = $result['deaths'];
-                            $last->estimated_population_2019 = $result['estimated_population_2019'];
-                            $last->is_last = $result['is_last'];
-                            $last->order_for_place = $result['order_for_place'];
-                            $last->place_type = $result['place_type'];
-                            $last->state = $result['state'];
-                            $last->save();
-                        }
-
-                        // se a data for dirente
+                        // se a data for dirente (ontem por ex)
                         if($last->date != $result['date']) {
 
                             // atualiza o antigo
                             $last->is_last = 0;
                             $last->save();
+                        }
 
-                            // cria o novo registro
+
+                        // se a data for igual (hoje por ex)
+                        if($last->date == $result['date']) {
+
+                            // deleta
+                            $last->delete();
+                        }
+
+                        // cria o novo registro
                             $city = new City;
                             $city->city = $result['city'];
                             $city->city_ibge_code = $result['city_ibge_code'];
                             $city->confirmed = $result['confirmed'];
                             $city->confirmed_per_100k_inhabitants = $result['confirmed_per_100k_inhabitants'];
-
                             $city->date = $result['date'];
                             $city->death_rate = $result['death_rate'];
                             $city->deaths = $result['deaths'];
-
                             $city->estimated_population_2019 = $result['estimated_population_2019'];
                             $city->is_last = $result['is_last'];
                             $city->order_for_place = $result['order_for_place'];
                             $city->place_type = $result['place_type'];
                             $city->state = $result['state'];
-
                             $city->save();
-                        }
                     }
                 }
             }

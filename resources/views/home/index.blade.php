@@ -62,7 +62,7 @@
                                         </td>
                                         <td> {{ $state->confirmed }}</td>
                                         <td> {{ $state->deaths }}</td>
-                                        <td> {{ $state->death_rate ? $state->death_rate : 0 }}</td>
+                                        <td> {{ $state->death_rate ? $state->death_rate : 0 }}%</td>
                                     </tr>
                                 @endforeach
                             </tbody>

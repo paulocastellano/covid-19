@@ -64,7 +64,7 @@
                                         </td>
                                         <td> {{ $city->confirmed }}</td>
                                         <td> {{ $city->deaths }}</td>
-                                        <td> {{ $city->death_rate ? $city->death_rate : 0 }}%</td>
+                                        <td> {{ $city->death_rate ? ($city->death_rate * 100) : 0 }}%</td>
                                     </tr>
                                 @endforeach
                             </tbody>

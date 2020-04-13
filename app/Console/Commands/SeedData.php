@@ -44,7 +44,7 @@ class SeedData extends Command
     public function handle()
     {
         // zera o banco
-        $this->call('migrate:fresh');
+        $this->call('migrate:fresh --force');
 
         try {
             // começa com true

@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use DB, Log, Cache;
+use DB, Log, Cache,Artisan;
 
 use Illuminate\Support\Facades\Http;
 
@@ -44,7 +44,9 @@ class SeedData extends Command
     public function handle()
     {
         // zera o banco
-        $this->call('migrate:fresh --force');
+        Artisan::call('migrate:refresh', [
+            '--force' => true,
+        ]);
 
         try {
             // começa com true
